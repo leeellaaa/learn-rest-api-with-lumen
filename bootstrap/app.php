@@ -60,6 +60,9 @@ $app->singleton(
 */
 
 $app->configure('app');
+collect(scandir(__DIR__ . '/../config'))->each(function ($item) use ($app) {
+    $app->configure(basename($item, '.php'));
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -76,9 +79,9 @@ $app->configure('app');
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -92,9 +95,10 @@ $app->configure('app');
 */
 
 // $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
