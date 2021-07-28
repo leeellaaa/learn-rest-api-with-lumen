@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
+use App\Http\Resources\CategoryResource;
 use App\Repositories\CategoryRepositoryEloquent;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return $this->categoryRepository->all();
+        return CategoryResource::collection($this->categoryRepository->all());
     }
 
     /**
@@ -35,7 +36,7 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request, CategoryService $categoryService)
     {
         $data = $categoryService->store($request);
-        return $this->categoryRepository->create($data);
+        return new CategoryResource($this->categoryRepository->create($data));
     }
 
     /**
@@ -46,7 +47,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        return $this->categoryRepository->find($id);
+        return new CategoryResource($this->categoryRepository->find($id));
     }
 
     /**
@@ -59,7 +60,7 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request, $id, CategoryService $categoryService)
     {
         $data = $categoryService->store($request);
-        return $this->categoryRepository->update($data, $id);
+        return new CategoryResource($this->categoryRepository->update($data, $id));
     }
 
     /**
