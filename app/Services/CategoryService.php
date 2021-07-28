@@ -1,14 +1,21 @@
 <?php
 
 namespace App\Services;
+
 use Illuminate\Support\Str;
 
 class CategoryService
 {
     public function store($request)
     {
-        $request['slug'] = Str::slug($request->name, '-');
+        $data = $request->all();
+        $data['slug'] = Str::slug($request->name, '-');
 
-        return $request->all();
+        if ($request->hasFile('image')) {
+            $uploadService = new UploadFileService;
+            $data['image'] = $uploadService->uploadToPublic($request, 'image', 'categories');
+        }
+
+        return $data;
     }
 }
