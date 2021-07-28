@@ -27,3 +27,11 @@ Route::group([
         Route::post('me', 'AuthController@me');
     });
 });
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::delete('category/{id}', 'CategoryController@destroy');
+    Route::get('category', 'CategoryController@index');
+    Route::get('category/{id}', 'CategoryController@show');
+    Route::post('category', 'CategoryController@store');
+    Route::put('category/{id}', 'CategoryController@update');
+});
