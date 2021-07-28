@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
 use App\Repositories\CategoryRepositoryEloquent;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -32,10 +32,10 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CategoryRequest $request)
+    public function store(CategoryRequest $request, CategoryService $categoryService)
     {
-        $request['slug'] = Str::slug($request->name, '-');
-        return $this->categoryRepository->create($request->all());
+        $data = $categoryService->store($request);
+        return $this->categoryRepository->create($data);
     }
 
     /**
@@ -56,10 +56,10 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryRequest $request, $id)
+    public function update(CategoryRequest $request, $id, CategoryService $categoryService)
     {
-        $request['slug'] = Str::slug($request->name, '-');
-        return $this->categoryRepository->update($request->all(), $id);
+        $data = $categoryService->store($request);
+        return $this->categoryRepository->update($data, $id);
     }
 
     /**
